@@ -1,0 +1,29 @@
+name: dependabot approve and automerge
+
+on:
+  workflow_call:
+
+jobs:
+  dependabot-approve-and-automerge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    permissions:
+      pull-requests: write
+      contents: write
+
+    if: ${{ github.actor == 'dependabot[bot]' }}
+
+    steps:
+      - uses: dependabot/fetch-metadata@v2.4.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Approve a PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Enable auto-merge for Dependabot PRs
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
