@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "@xhrdev/actions",
+  "version": "0.0.1",
+  "description": "Reusable GitHub Actions for XHR Software Inc",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xhrdev/actions.git"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "depcheck": "depcheck"
+  },
+  "license": "UNLICENSED",
+  "author": "XHR Software Inc",
+  "keywords": [
+    "github-actions",
+    "reusable",
+    "workflows"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@commitlint/cli": "16.2.4",
+    "@commitlint/config-angular": "16.2.4",
+    "depcheck": "1.4.7",
+    "husky": "9.1.7"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-angular"
+    ]
+  }
+}

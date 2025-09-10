@@ -1,0 +1,4 @@
+ignores: [
+  '@commitlint/cli',
+  '@commitlint/config-angular',
+]
