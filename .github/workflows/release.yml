@@ -3,7 +3,6 @@ name: pr
 
 on:
   workflow_call:
-    secrets: inherit
 
 defaults:
   run:
