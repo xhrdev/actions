@@ -3,6 +3,10 @@ name: dependabot approve and automerge
 on:
   workflow_call:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   dependabot-approve-and-automerge:
     runs-on: ubuntu-latest
