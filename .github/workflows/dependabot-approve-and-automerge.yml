@@ -1,6 +1,9 @@
 name: dependabot approve and automerge
 
 on:
+  pull_request:
+    branches:
+      - master
   workflow_call:
 
 defaults:
