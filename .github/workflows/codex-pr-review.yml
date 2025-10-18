@@ -4,15 +4,15 @@ name: Codex PR Review
 on:
   workflow_call:
     inputs:
-      openai-api-key:
-        description: 'OpenAI API key for Codex review'
-        required: true
-        type: string
       timeout-minutes:
         description: 'Timeout in minutes for the codex job'
         required: false
         type: number
         default: 10
+    secrets:
+      openai-api-key:
+        description: 'OpenAI API key for Codex review'
+        required: true
 
 jobs:
   codex:
@@ -38,7 +38,7 @@ jobs:
         id: run_codex
         uses: openai/codex-action@v1
         with:
-          openai-api-key: ${{ inputs.openai-api-key }}
+          openai-api-key: ${{ secrets.openai-api-key }}
           safety-strategy: drop-sudo
           prompt: |
             This is PR #${{ github.event.pull_request.number }} for ${{ github.repository }}.
