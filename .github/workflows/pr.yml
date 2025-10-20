@@ -29,8 +29,6 @@ jobs:
       - name: Set up NPM authentication
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.READ_ONLY_PAT }}" >> ~/.npmrc
 
-      - run: make clean # remove any caching from github actions
-
       - run: make ci
         env:
           GITHUB_TOKEN: ${{ secrets.READ_ONLY_PAT }}
