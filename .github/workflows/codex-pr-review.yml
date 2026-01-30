@@ -16,7 +16,7 @@ on:
 
 jobs:
   codex:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim # https://docs.github.com/en/actions/reference/runners/github-hosted-runners#single-cpu-runners
     timeout-minutes: ${{ inputs.timeout-minutes }}
     if: github.actor != 'dependabot[bot]'
     permissions:
@@ -56,7 +56,7 @@ jobs:
             ${{ github.event.pull_request.body }}
 
   post_feedback:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     needs:
       - codex
     if: github.actor != 'dependabot[bot]' && needs.codex.outputs.final_message != ''
