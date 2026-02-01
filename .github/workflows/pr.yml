@@ -56,3 +56,16 @@ jobs:
           NODE_OPTIONS: "--max-old-space-size=8192"
 
       - run: bash <(curl -s https://codecov.io/bash)
+
+      # - uses: actions/upload-artifact@v4
+        # with:
+          # name: build-artefact
+          # path: |
+            # !dist/
+            # !cdk.out
+            # !target/
+            # !coverage/
+            # !result/
+            # .
+          # if-no-files-found: error
+          # retention-days: 1
