@@ -38,9 +38,12 @@ jobs:
       - name: Run Codex
         id: run_codex
         uses: openai/codex-action@v1
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         with:
           openai-api-key: ${{ secrets.openai-api-key }}
           safety-strategy: drop-sudo
+          sandbox: workspace-write
           prompt: |
             This is PR #${{ github.event.pull_request.number }} for ${{ github.repository }}.
             Base SHA: ${{ github.event.pull_request.base.sha }}
