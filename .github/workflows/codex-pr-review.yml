@@ -10,7 +10,7 @@ on:
         type: number
         default: 10
     secrets:
-      openai-api-key:
+      OPENAI_API_KEY:
         description: 'OpenAI API key for Codex review'
         required: true
 
@@ -41,7 +41,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         with:
-          openai-api-key: ${{ secrets.openai-api-key }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           safety-strategy: drop-sudo
           sandbox: workspace-write
           prompt: |
