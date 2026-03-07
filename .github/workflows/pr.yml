@@ -47,8 +47,8 @@ jobs:
           semantic_version: 24
           extra_plugins: |
             @semantic-release/git@10.0.1
-            @semantic-release/changelog@6.0.0
-            @semantic-release/exec@6.0.1
+            @semantic-release/changelog@6.0.3
+            @semantic-release/exec@7.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
           NPM_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
@@ -57,7 +57,7 @@ jobs:
 
       - run: bash <(curl -s https://codecov.io/bash)
 
-      # - uses: actions/upload-artifact@v4
+      # - uses: actions/upload-artifact@v7
         # with:
           # name: build-artefact
           # path: |

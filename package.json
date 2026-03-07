@@ -21,8 +21,8 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "16.2.4",
-    "@commitlint/config-angular": "16.2.4",
+    "@commitlint/cli": "20.4.3",
+    "@commitlint/config-angular": "20.4.3",
     "depcheck": "1.4.7",
     "husky": "9.1.7"
   },

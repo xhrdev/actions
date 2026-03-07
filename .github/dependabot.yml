@@ -16,9 +16,6 @@ updates:
     assignees:
       - skilbjo
     rebase-strategy: auto
-    ignore:
-      - dependency-name: '@commitlint/cli'
-      - dependency-name: '@commitlint/config-angular'
     versioning-strategy: increase
     open-pull-requests-limit: 5
     commit-message:
