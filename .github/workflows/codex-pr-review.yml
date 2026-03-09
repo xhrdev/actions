@@ -16,7 +16,7 @@ on:
 
 jobs:
   codex:
-    runs-on: ubuntu-slim # https://docs.github.com/en/actions/reference/runners/github-hosted-runners#single-cpu-runners
+    runs-on: ubuntu-latest
     timeout-minutes: ${{ inputs.timeout-minutes }}
     if: github.actor != 'dependabot[bot]'
     permissions:
