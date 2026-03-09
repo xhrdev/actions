@@ -46,6 +46,8 @@ jobs:
           safety-strategy: drop-sudo
           sandbox: workspace-write
           prompt: |
+            The workspace is /home/runner/work/${{ github.repository }}/${{ github.repository }}
+
             This is PR #${{ github.event.pull_request.number }} for ${{ github.repository }}.
             Base SHA: ${{ github.event.pull_request.base.sha }}
             Head SHA: ${{ github.event.pull_request.head.sha }}
