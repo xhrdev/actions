@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/package",
   "name": "@xhrdev/actions",
   "version": "0.0.1",
-  "description": "Reusable GitHub Actions for XHR Software Inc",
+  "description": "reusable github actions",
   "private": true,
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "husky": "9.1.7"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.14.1"
   },
   "commitlint": {
     "extends": [
