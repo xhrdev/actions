@@ -3,6 +3,11 @@ name: pr
 
 on:
   workflow_call:
+    inputs:
+      download-dist-artefacts: # for tls
+        type: boolean
+        required: false
+        default: false
 
 defaults:
   run:
@@ -10,7 +15,6 @@ defaults:
 
 jobs:
   build-and-test:
-    # runs-on: ubuntu-latest
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 15
     permissions:
@@ -26,6 +30,13 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      - name: Download dist artefacts # for tls
+        if: inputs.download-dist-artefacts
+        uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
 
       - name: Set up NPM authentication
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.READ_ONLY_PAT }}" >> ~/.npmrc

@@ -3,6 +3,16 @@ name: release
 
 on:
   workflow_call:
+    inputs:
+      download-dist-artefacts: # for tls
+        type: boolean
+        required: false
+        default: false
+    outputs:
+      new_release_version:
+        value: ${{ jobs.publish-artifact.outputs.new_release_version }}
+      new_release_published:
+        value: ${{ jobs.publish-artifact.outputs.new_release_published }}
 
 defaults:
   run:
@@ -30,6 +40,13 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      - name: Download dist artefacts # for tls
+        if: inputs.download-dist-artefacts
+        uses: actions/download-artifact@v8
+        with:
+          path: dist
+          merge-multiple: true
 
       - name: Set up NPM authentication
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.ACTIONS_TOKEN }}" >> ~/.npmrc
