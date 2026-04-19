@@ -1,0 +1,107 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: build-rust
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        type: string
+        required: true
+      linux-arm:
+        type: boolean
+        default: true
+      linux-x86:
+        type: boolean
+        default: false
+      darwin-arm:
+        type: boolean
+        default: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  linux-arm:
+    if: inputs.linux-arm
+    timeout-minutes: 10
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-unknown-linux-gnu
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - name: Build Binary
+        run: |
+          export CC_aarch64_unknown_linux_gnu=/usr/bin/aarch64-linux-gnu-gcc
+          export CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=/usr/bin/aarch64-linux-gnu-gcc
+          cargo build --verbose --locked --release --target aarch64-unknown-linux-gnu
+      - name: Release Binary
+        run: |
+          mkdir -p ./dist/linux-arm
+          mv target/aarch64-unknown-linux-gnu/release/lib${{ inputs.package-name }}.so ./dist/linux-arm/${{ inputs.package-name }}.so
+      - uses: actions/upload-artifact@v7
+        with:
+          name: linux-arm
+          path: dist
+          if-no-files-found: error
+          retention-days: 2
+
+  linux-x86:
+    if: inputs.linux-x86
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-gnu
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - name: Build Binary
+        run: cargo build --verbose --locked --release --target x86_64-unknown-linux-gnu
+      - name: Release Binary
+        run: |
+          mkdir -p ./dist/linux-x86
+          mv target/x86_64-unknown-linux-gnu/release/lib${{ inputs.package-name }}.so ./dist/linux-x86/${{ inputs.package-name }}.so
+      - uses: actions/upload-artifact@v7
+        with:
+          name: linux-x86
+          path: dist
+          if-no-files-found: error
+          retention-days: 2
+
+  darwin-arm:
+    if: inputs.darwin-arm
+    timeout-minutes: 10
+    runs-on: macos-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+          components: rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - name: Build Binary
+        run: cargo build --verbose --locked --release --target aarch64-apple-darwin
+      - name: Release Binary
+        run: |
+          mkdir -p ./dist/darwin-arm
+          mv target/aarch64-apple-darwin/release/lib${{ inputs.package-name }}.dylib ./dist/darwin-arm/${{ inputs.package-name }}.dylib
+      - uses: actions/upload-artifact@v7
+        with:
+          name: darwin-arm
+          path: dist
+          if-no-files-found: error
+          retention-days: 2
