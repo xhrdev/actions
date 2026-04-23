@@ -22,7 +22,7 @@ jobs:
       contents: read
       actions: none
       id-token: none
-      packages: none
+      packages: read
 
     steps:
       - uses: actions/checkout@v6
