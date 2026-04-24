@@ -8,6 +8,10 @@ on:
         type: boolean
         required: false
         default: false
+      python:
+        type: boolean
+        required: false
+        default: false
     outputs:
       new_release_version:
         value: ${{ jobs.publish-artifact.outputs.new_release_version }}
@@ -42,6 +46,11 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
+
+      - uses: actions/setup-python@v5
+        if: inputs.python
+        with:
+          python-version-file: .python-version
 
       - name: Download dist artefacts # for tls
         if: inputs.download-dist-artefacts
