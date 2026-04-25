@@ -21,7 +21,7 @@ on:
 jobs:
   # Your existing build/test job
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       # ... your build steps
 
