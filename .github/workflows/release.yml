@@ -60,7 +60,7 @@ jobs:
           merge-multiple: true
 
       - name: Set up NPM authentication
-        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.READ_ONLY_PAT }}" >> ~/.npmrc
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
 
       - uses: cycjimmy/semantic-release-action@v6
         id: semantic # need an `id` for output variables
