@@ -8,6 +8,10 @@ on:
         type: boolean
         required: false
         default: false
+      include-node-modules:
+        type: boolean
+        required: false
+        default: false
       python:
         type: boolean
         required: false
@@ -80,8 +84,16 @@ jobs:
         if: steps.semantic.outputs.new_release_published == 'true'
         run: bash <(curl -s https://codecov.io/bash);
 
+      - name: Upload build artefact (with node_modules)
+        if: steps.semantic.outputs.new_release_published == 'true' && inputs.include-node-modules
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-artefact
+          path: .
+          retention-days: 1
+
       - name: Upload build artefact
-        if: steps.semantic.outputs.new_release_published == 'true'
+        if: steps.semantic.outputs.new_release_published == 'true' && !inputs.include-node-modules
         uses: actions/upload-artifact@v7
         with:
           name: build-artefact
