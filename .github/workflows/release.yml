@@ -18,16 +18,16 @@ on:
         default: false
     outputs:
       new_release_version:
-        value: ${{ jobs.publish-artifact.outputs.new_release_version }}
+        value: ${{ jobs.publish-artefact.outputs.new_release_version }}
       new_release_published:
-        value: ${{ jobs.publish-artifact.outputs.new_release_published }}
+        value: ${{ jobs.publish-artefact.outputs.new_release_published }}
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  publish-artifact:
+  publish-artefact:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 15
     permissions:

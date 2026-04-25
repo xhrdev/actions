@@ -1,16 +1,16 @@
-name: Remove old artifacts
+name: Remove old artefacts
 
 on:
   workflow_call:
 
 jobs:
-  remove-old-artifacts:
+  remove-old-artefacts:
     runs-on: ubuntu-slim # https://docs.github.com/en/actions/reference/runners/github-hosted-runners#single-cpu-runners
     timeout-minutes: 10
     permissions:
       actions: write
     steps:
-      - name: Remove old artifacts
+      - name: Remove old artefacts
         uses: c-hive/gha-remove-artifacts@v1
         with:
           age: '2 days'
