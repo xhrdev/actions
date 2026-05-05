@@ -1,5 +1,4 @@
-name: Remove old artefacts
-
+name: remove old artefacts
 on:
   workflow_call:
 
@@ -13,5 +12,5 @@ jobs:
       - name: Remove old artefacts
         uses: c-hive/gha-remove-artifacts@v1
         with:
-          age: '2 days'
-          skip-recent: 3
+          age: '1 day'
+          skip-recent: 1
