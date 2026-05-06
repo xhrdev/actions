@@ -50,7 +50,7 @@ jobs:
           name: linux-arm
           path: dist
           if-no-files-found: error
-          retention-days: 2
+          retention-days: 1
 
   linux-x86:
     if: inputs.linux-x86
@@ -77,7 +77,7 @@ jobs:
           name: linux-x86
           path: dist
           if-no-files-found: error
-          retention-days: 2
+          retention-days: 1
 
   darwin-arm:
     if: inputs.darwin-arm
@@ -104,4 +104,4 @@ jobs:
           name: darwin-arm
           path: dist
           if-no-files-found: error
-          retention-days: 2
+          retention-days: 1
