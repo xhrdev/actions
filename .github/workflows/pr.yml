@@ -42,7 +42,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         if: inputs.python
         with:
           python-version-file: .python-version
