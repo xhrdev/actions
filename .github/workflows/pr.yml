@@ -86,7 +86,13 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: build-artefact
+          # upload-artifact excludes dotfiles by default, so the artefact
+          # arrived without .nvmrc (setup-node reads it), .dockerignore (docker
+          # build honours it) or .npmrc. `.git` stays out: large, and nothing
+          # downstream reads it.
+          include-hidden-files: true
           path: |
             .
             !node_modules/**
+            !.git/**
           retention-days: 1
