@@ -18,8 +18,7 @@ jobs:
           BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
         run: |
           gh extension install actions/gh-actions-cache
-          cacheKeysForPR=$(gh actions-cache list -R "$REPO" -B "$BRANCH" -L 100 | cut -f 1)
           set +e
-          for cacheKey in $cacheKeysForPR; do
+          gh actions-cache list -R "$REPO" -B "$BRANCH" -L 100 | cut -f 1 | while IFS= read -r cacheKey; do
             gh actions-cache delete "$cacheKey" -R "$REPO" -B "$BRANCH" --confirm
           done
