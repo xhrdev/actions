@@ -1,0 +1,25 @@
+name: cleanup pr caches
+
+on:
+  workflow_call:
+
+jobs:
+  cleanup-pr-caches:
+    runs-on: ubuntu-slim # https://docs.github.com/en/actions/reference/runners/github-hosted-runners#single-cpu-runners
+    timeout-minutes: 5
+    permissions:
+      actions: write
+
+    steps:
+      - name: Delete caches scoped to this PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
+        run: |
+          gh extension install actions/gh-actions-cache
+          cacheKeysForPR=$(gh actions-cache list -R "$REPO" -B "$BRANCH" -L 100 | cut -f 1)
+          set +e
+          for cacheKey in $cacheKeysForPR; do
+            gh actions-cache delete "$cacheKey" -R "$REPO" -B "$BRANCH" --confirm
+          done
