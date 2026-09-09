@@ -1,0 +1,42 @@
+name: prune ghcr images
+on:
+  workflow_call:
+    inputs:
+      owner:
+        required: true
+        type: string
+      repository:
+        required: true
+        type: string
+      keep-n-tagged:
+        required: false
+        type: number
+        default: 5
+    secrets:
+      token:
+        required: true
+
+jobs:
+  prune:
+    runs-on: ubuntu-slim # https://docs.github.com/en/actions/reference/runners/github-hosted-runners#single-cpu-runners
+    timeout-minutes: 10
+    steps:
+      # Multi-arch pushes (release.yml) publish a merged manifest tag (e.g.
+      # `1.0.63`, `latest`) that references two single-arch tags
+      # (`1.0.63-arm64`, `1.0.63-amd64`). A naive "delete oldest N package
+      # versions" cleanup (e.g. actions/delete-package-versions) doesn't know
+      # about that reference and can delete an arch image out from under a
+      # manifest it's still counted in, breaking the pull for that release.
+      # ghcr-cleanup-action understands manifest-list references, so
+      # keep-n-tagged counts release groups (a tagged version + its arch
+      # children) rather than raw package-version rows, and won't strand a
+      # manifest.
+      - name: Prune old package versions
+        uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          owner: ${{ inputs.owner }}
+          repository: ${{ inputs.repository }}
+          token: ${{ secrets.token }}
+          keep-n-tagged: ${{ inputs.keep-n-tagged }}
+          delete-untagged: true
+          delete-partial-images: true
