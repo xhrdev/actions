@@ -63,6 +63,7 @@ jobs:
 
   post_feedback:
     runs-on: ubuntu-slim
+    timeout-minutes: 5
     needs:
       - codex
     if: github.actor != 'dependabot[bot]' && needs.codex.outputs.final_message != ''
