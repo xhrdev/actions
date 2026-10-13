@@ -33,7 +33,7 @@ defaults:
 jobs:
   publish-artefact:
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 15
+    timeout-minutes: 20
     permissions:
       pull-requests: write
       contents: write
