@@ -84,7 +84,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_OPTIONS: "--max-old-space-size=10240"
 
-      - uses: cycjimmy/semantic-release-action@v6.0.0
+      - uses: cycjimmy/semantic-release-action@v8.0.0
         id: semantic
         with:
           dry_run: true
