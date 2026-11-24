@@ -8,6 +8,10 @@ on:
         type: boolean
         required: false
         default: false
+      codecov: # upload coverage to codecov; repos that do not use codecov pass false
+        type: boolean
+        required: false
+        default: true
       download-dist-artefacts: # for tls
         type: boolean
         required: false
@@ -99,7 +103,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_OPTIONS: "--max-old-space-size=10240"
 
-      - run: bash <(curl -s https://codecov.io/bash)
+      - name: codecov
+        if: inputs.codecov
+        run: bash <(curl -s https://codecov.io/bash)
 
       - name: Upload build artefact
         if: inputs.upload-build-artefact

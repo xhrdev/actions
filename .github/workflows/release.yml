@@ -8,6 +8,10 @@ on:
         type: boolean
         required: false
         default: false
+      codecov: # upload coverage to codecov; repos that do not use codecov pass false
+        type: boolean
+        required: false
+        default: true
       download-dist-artefacts: # for tls
         type: boolean
         required: false
@@ -101,7 +105,7 @@ jobs:
           NODE_OPTIONS: "--max-old-space-size=10240"
 
       - name: codecov
-        if: steps.semantic.outputs.new_release_published == 'true'
+        if: steps.semantic.outputs.new_release_published == 'true' && inputs.codecov
         run: bash <(curl -s https://codecov.io/bash);
 
       - name: Upload build artefact (with node_modules)
