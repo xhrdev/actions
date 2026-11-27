@@ -24,6 +24,16 @@ on:
         type: boolean
         required: false
         default: false
+      upload-build-artefact:
+        type: boolean
+        required: false
+        # Default true preserves the current behaviour for pipelines that
+        # consume the artefact downstream (xhrdev's merge-manifest downloads
+        # it). Repos without a consumer should pass false: a published release
+        # uploads on every push otherwise, and the org's artifact storage
+        # quota is already exhausted. The pr workflow's input of the same
+        # name already defaults false, and no pr caller overrides it.
+        default: true
     secrets:
       # Exported to the semantic-release step as the env var of the same name,
       # because that is where verifyConditionsCmd runs `make ci` on this path
@@ -119,7 +129,7 @@ jobs:
         run: bash <(curl -s https://codecov.io/bash);
 
       - name: Upload build artefact (with node_modules)
-        if: steps.semantic.outputs.new_release_published == 'true' && inputs.include-node-modules
+        if: steps.semantic.outputs.new_release_published == 'true' && inputs.upload-build-artefact && inputs.include-node-modules
         uses: actions/upload-artifact@v7
         with:
           name: build-artefact
@@ -134,7 +144,7 @@ jobs:
           retention-days: 1
 
       - name: Upload build artefact
-        if: steps.semantic.outputs.new_release_published == 'true' && !inputs.include-node-modules
+        if: steps.semantic.outputs.new_release_published == 'true' && inputs.upload-build-artefact && !inputs.include-node-modules
         uses: actions/upload-artifact@v7
         with:
           name: build-artefact
