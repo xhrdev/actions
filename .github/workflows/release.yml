@@ -24,6 +24,13 @@ on:
         type: boolean
         required: false
         default: false
+    secrets:
+      # Exported to the semantic-release step as the env var of the same name,
+      # because that is where verifyConditionsCmd runs `make ci` on this path
+      # (status). Callers that `secrets: inherit` need only set a repo secret
+      # called API_KEY; repos that do not set one see an empty env var.
+      API_KEY:
+        required: false
     outputs:
       new_release_version:
         value: ${{ jobs.publish-artefact.outputs.new_release_version }}
@@ -103,6 +110,9 @@ jobs:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_OPTIONS: "--max-old-space-size=10240"
+          # verifyConditionsCmd runs `make ci` in here (status); its live
+          # sensor lane needs the key
+          API_KEY: ${{ secrets.API_KEY }}
 
       - name: codecov
         if: steps.semantic.outputs.new_release_published == 'true' && inputs.codecov

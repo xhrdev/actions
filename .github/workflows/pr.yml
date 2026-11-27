@@ -28,6 +28,14 @@ on:
         type: boolean
         required: false
         default: false
+    secrets:
+      # Exported to `make ci` — and to the semantic-release steps, which run
+      # it through verifyConditionsCmd — as the env var of the same name, for
+      # repos whose live checks need a keyed solver (status). Callers that
+      # `secrets: inherit` need only set a repo secret called API_KEY; repos
+      # that do not set one see an empty env var and are unaffected.
+      API_KEY:
+        required: false
 
 defaults:
   run:
@@ -91,6 +99,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_OPTIONS: "--max-old-space-size=10240"
+          API_KEY: ${{ secrets.API_KEY }}
 
       - uses: cycjimmy/semantic-release-action@v8.1.4
         id: semantic
@@ -107,6 +116,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_OPTIONS: "--max-old-space-size=10240"
+          # verifyConditionsCmd may run `make ci` in here too (status)
+          API_KEY: ${{ secrets.API_KEY }}
 
       - name: codecov
         if: inputs.codecov
