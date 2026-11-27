@@ -20,6 +20,10 @@ on:
         type: boolean
         required: false
         default: false
+      semantic-release: # dry-run semantic-release; needs a release config in the calling repo
+        type: boolean
+        required: false
+        default: true
       upload-build-artefact:
         type: boolean
         required: false
@@ -90,6 +94,7 @@ jobs:
 
       - uses: cycjimmy/semantic-release-action@v8.1.4
         id: semantic
+        if: inputs.semantic-release
         with:
           dry_run: true
           semantic_version: 24
