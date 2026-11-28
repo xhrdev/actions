@@ -128,7 +128,12 @@ jobs:
           NODE_OPTIONS: "--max-old-space-size=10240"
           API_KEY: ${{ secrets.API_KEY }}
 
+      # Skipped entirely for callers passing semantic-release: false — they
+      # gate on the `make ci` step above and must not publish. Unconditional
+      # until #47 conditioned nothing: the step ran anyway, re-tagging the
+      # head commit and re-creating notes refs a caller had just deleted.
       - uses: cycjimmy/semantic-release-action@v8.1.4
+        if: inputs.semantic-release
         id: semantic # need an `id` for output variables
         with:
           semantic_version: 24
