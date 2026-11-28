@@ -34,6 +34,14 @@ on:
         # quota is already exhausted. The pr workflow's input of the same
         # name already defaults false, and no pr caller overrides it.
         default: true
+      semantic-release:
+        type: boolean
+        required: false
+        # Default true: semantic-release stays the release gate through
+        # verifyConditionsCmd, as it is for xhrdev. A caller that only wants
+        # the gate passes false — the `make ci` step below runs instead, and
+        # nothing publishes: no tag, no notes ref, no codecov, no artefact.
+        default: true
     secrets:
       # Exported to the semantic-release step as the env var of the same name,
       # because that is where verifyConditionsCmd runs `make ci` on this path
@@ -106,6 +114,19 @@ jobs:
           sudo apt-get install -y -qq /tmp/chrome-arm64.deb
           rm -f /tmp/chrome-arm64.deb
           google-chrome --version
+
+      # The gate when the caller opted out of semantic-release: same command,
+      # run directly. API_KEY is the optional secret declared on
+      # workflow_call (#45) — callers that `secrets: inherit` need only set a
+      # repo secret of that name; status's sensor lane gates `make ci` on it.
+      - run: make ci
+        if: ${{ !inputs.semantic-release }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_OPTIONS: "--max-old-space-size=10240"
+          API_KEY: ${{ secrets.API_KEY }}
 
       - uses: cycjimmy/semantic-release-action@v8.1.4
         id: semantic # need an `id` for output variables
